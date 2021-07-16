@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <title>HTML5 Canvas</title>
+    </head>
+    <body>
+        <canvas class="canvas" id="canvas" width="1000pxs" height="900px"></canvas>
+        <style>
+            html, body {
+                margin: 0;
+                width: 100vw;
+                height: 100vh;
+            }
+
+            .canvas {
+                border: 1px solid red;
+            }
+        </style>
+        <script>
+            const canvas = document.querySelector("#canvas")
+            const context = canvas.getContext("2d");
+
+            let isDrawing = false
+            let lastX = 0;
+            let lastY = 0;
+            let hue = 0;
+            let lineWidth = 5;
+            let increasing = true;
+
+            context.lineJoin = "round";
+            context.lineCap = "round";
+
+            canvas.addEventListener("pointermove", (event) => {
+                if(!isDrawing) return
+
+                context.beginPath();
+                context.strokeStyle = `hsl(${hue}, 100%, 50%)`;
+                context.lineWidth = lineWidth;
+                context.moveTo(lastX, lastY)
+                context.lineTo(event.clientX, event.clientY);
+                context.stroke();
+                context.closePath();
+
+                lastX = event.clientX;
+                lastY = event.clientY;
+
+                hue++;
+                if (hue > 360) hue = 0
+                if(lineWidth == 60) increasing = false;
+                if(lineWidth == 5) increasing = true;
+                if (increasing) {
+                    lineWidth++;
+                }
+                else {
+                    lineWidth -= 1;
+                }
+            })
+            canvas.addEventListener("pointerdown", (event) => {
+                isDrawing = true;
+                lastX = event.clientX;
+                lastY = event.clientY;
+                lineWidth = 5;
+            })
+            canvas.addEventListener("pointerup", () => isDrawing = false)
+            canvas.addEventListener("pointerout", () => isDrawing = false)
+        </script>
+    </body>
+</html>
