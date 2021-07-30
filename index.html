@@ -5,7 +5,7 @@
         <title>HTML5 Canvas</title>
     </head>
     <body>
-        <canvas class="canvas" id="canvas" width="1000pxs" height="900px"></canvas>
+        <canvas class="canvas" id="canvas" width="800%" height="600%"></canvas>
         <style>
             html, body {
                 margin: 0;
@@ -14,6 +14,7 @@
             }
 
             .canvas {
+                margin : 20px;
                 border: 1px solid red;
             }
         </style>
@@ -37,11 +38,13 @@
                 context.beginPath();
                 context.strokeStyle = `hsl(${hue}, 100%, 50%)`;
                 context.lineWidth = lineWidth;
-                context.moveTo(lastX, lastY)
-                context.lineTo(event.clientX, event.clientY);
+                //-20 beacuse 20 are the pixels of margin that has the canvas 
+                context.moveTo(lastX-20, lastY-20)
+                context.lineTo(event.clientX-20, event.clientY-20);
                 context.stroke();
                 context.closePath();
 
+                console.log(event)
                 lastX = event.clientX;
                 lastY = event.clientY;
 
